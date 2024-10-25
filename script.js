@@ -63,5 +63,13 @@ const game = (() => {
         [2, 5, 8]
     ];
 
+    const checkForWins = () => {
+        const board = Gameboard.getBoard();
+        return winningCombinations.some(combination => {
+            const [a, b, c] = combination;
+            return board[a] !== "" && board[a] === board[b] && board[b] === board[c];
+        });
+    };
+
     return { putX, putO, play, checkForWins };
 })();
