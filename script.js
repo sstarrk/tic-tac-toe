@@ -10,6 +10,8 @@ const Gameboard = (() => {
         console.log(` ${board[6]}  |  ${board[7]}  |  ${board[8]} `);
     };
 
+    const clearBoard = () => board = ["", "", "", "", "", "", "", "", ""];
+
     const fillCell = (player) => {
         let cellNumber = prompt("Fill the cell: ");
         if(board[cellNumber - 1] == "") {
@@ -20,7 +22,7 @@ const Gameboard = (() => {
         }
     };
 
-    return { getBoard, displayBoard, fillCell };
+    return { getBoard, displayBoard, fillCell, clearBoard };
 })();
 
 function Player(name, sign) {
@@ -33,24 +35,6 @@ const game = (() => {
 
     const putX = () => Gameboard.fillCell(player1);
     const putO = () => Gameboard.fillCell(player2);
-
-    const play = () => {
-        Gameboard.displayBoard();
-        let changer = true;
-        while(Gameboard.getBoard().some((element) => element == "")) {
-            if(changer == true) {
-                putX();
-                console.clear();
-                Gameboard.displayBoard();
-                changer = false;
-            } else if(changer == false) {
-                putO();
-                console.clear();
-                Gameboard.displayBoard();
-                changer = true;
-            };
-        };
-    };
 
     const winningCombinations = [
         [0, 1, 2],
@@ -69,6 +53,28 @@ const game = (() => {
             const [a, b, c] = combination;
             return board[a] !== "" && board[a] === board[b] && board[b] === board[c];
         });
+    };
+
+    const play = () => {
+        console.clear();
+        Gameboard.clearBoard();
+        Gameboard.displayBoard();
+        let changer = true;
+        while(Gameboard.getBoard().some((element) => element == "")) {
+            let currentPlayer = changer ? player1 : player2;
+            changer ? putX() : putO();
+            console.clear();
+            Gameboard.displayBoard();
+            if(checkForWins()) {
+                console.log(`${currentPlayer.name} wins!`);
+                break;
+            };
+
+            changer = changer ? false : true;
+        };
+        if(checkForWins() == false) {
+            console.log("Tie!");
+        };
     };
 
     return { putX, putO, play, checkForWins };
