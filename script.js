@@ -10,9 +10,14 @@ const Gameboard = (() => {
         console.log(` ${board[6]}  |  ${board[7]}  |  ${board[8]} `);
     };
 
-    const fillCell = () => {
+    // Now fills only X for test. Need to change later. 
+    const fillCell = (player) => {
         let cellNumber = prompt("Fill the cell: ");
-        board[cellNumber - 1] = "X";
+        if(board[cellNumber - 1] == "") {
+            board[cellNumber - 1] = player.sign;
+        } else {
+            console.log("This cell is already occupied. Choose another one");
+        }
     };
 
     return { getBoard, displayBoard, fillCell };
@@ -21,3 +26,14 @@ const Gameboard = (() => {
 function Player(name, sign) {
     return { name, sign }
 };
+
+const game = (() => {
+    const player1 = Player("Player1", "X");
+    const player2 = Player("Player2", "O");
+
+    const putX = () => Gameboard.fillCell(player1);
+
+    const putO = () => Gameboard.fillCell(player2);
+
+    return { putX, putO };
+})();
