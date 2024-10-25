@@ -17,6 +17,7 @@ const Gameboard = (() => {
             board[cellNumber - 1] = player.sign;
         } else {
             console.log("This cell is already occupied. Choose another one");
+            fillCell(player);
         }
     };
 
@@ -32,8 +33,25 @@ const game = (() => {
     const player2 = Player("Player2", "O");
 
     const putX = () => Gameboard.fillCell(player1);
-
     const putO = () => Gameboard.fillCell(player2);
 
-    return { putX, putO };
+    const play = () => {
+        Gameboard.displayBoard();
+        let changer = true;
+        while(Gameboard.getBoard().some((element) => element == "")) {
+            if(changer == true) {
+                putX();
+                console.clear();
+                Gameboard.displayBoard();
+                changer = false;
+            } else if(changer == false) {
+                putO();
+                console.clear();
+                Gameboard.displayBoard();
+                changer = true;
+            };
+        };
+    };
+    
+    return { putX, putO, play };
 })();
