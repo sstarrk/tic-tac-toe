@@ -9,6 +9,9 @@
 body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    font-family: "Permanent Marker";
+    letter-spacing: 4px;
+    font-size: 2rem;
 }
 
 img, picture, video, canvas, svg {
@@ -17,6 +20,50 @@ img, picture, video, canvas, svg {
 }
 
 .name {
-    font-family: "Permanent Marker";
     text-align: center;
+    font-size: 3rem;
+}
+
+.turn {
+    text-align: center;
+}
+
+.board {
+    border: 3px solid black;
+    height: 500px;
+    width: 500px;
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 164.66px);
+    grid-template-rows: repeat(3, 164.66px);
+}
+
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cell {
+    border: 3px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 120px;
+    padding-bottom: 5px;
+    cursor: pointer;
+}
+
+.reset {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#reset {
+    border: 3px solid black;
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
 }
