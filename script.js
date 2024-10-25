@@ -63,6 +63,7 @@ const game = (() => {
         while(Gameboard.getBoard().some((element) => element == "")) {
             let currentPlayer = changer ? player1 : player2;
             changer ? putX() : putO();
+            displayController.refreshBoard();
             console.clear();
             Gameboard.displayBoard();
             if(checkForWins()) {
@@ -78,4 +79,16 @@ const game = (() => {
     };
 
     return { putX, putO, play, checkForWins };
+})();
+
+const displayController = (() => {
+    const cells = document.querySelectorAll(".cell");
+    function refreshBoard() {
+        const board = Gameboard.getBoard();
+        cells.forEach((cell, index) => {
+            cell.textContent = board[index];
+        });
+    };
+    
+    return { refreshBoard };
 })();
