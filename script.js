@@ -34,11 +34,26 @@ function Player(name, sign) {
 const game = (() => {
     const cells = document.querySelectorAll(".cell"); 
     const turn = document.querySelector(".turn");
-    
-    const player1 = Player("Player1", "X");
-    const player2 = Player("Player2", "O");
-    
-    let currentPlayer = player1;
+
+    const okayButton = document.querySelector(".okay");
+    const container = document.querySelector(".container");
+    const oname = document.querySelector("#oname");
+    const xname = document.querySelector("#xname");
+
+    let player1;
+    let player2;
+    let currentPlayer;
+
+    okayButton.addEventListener("click", () => {
+        if(oname.value !== "" && xname.value !== "") {
+            container.style.display = "none";
+            player1 = Player(xname.value, "X");
+            player2 = Player(oname.value, "O");
+            currentPlayer = player1;
+            turn.textContent = `${currentPlayer.name}'s turn`;
+        }
+    });
+
 
     const winningCombinations = [
         [0, 1, 2],
