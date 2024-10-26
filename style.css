@@ -113,3 +113,57 @@ input {
     font-family: "Permanent Marker";
     font-size: 2rem;
 }
+
+.score-container {
+    position: absolute;
+    top: 10%;
+    left: 75%;
+}
+
+.score {
+    display: grid;
+    grid-template-columns: repeat(2, 140px);
+    grid-template-rows: repeat(2, 140px);
+}
+
+#score {
+    text-align: center;
+    font-size: 3rem;
+}
+
+.score-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 90px;
+}
+
+#first {
+    border-bottom: 3px solid black;
+    border-right: 3px solid black; 
+    font-size: 1.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
+}
+
+#second {
+    border-left: 3px solid black;
+    border-bottom: 3px solid black;
+    font-size: 1.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
+}
+
+#third {
+    border-top: 3px solid black;
+    border-right: 3px solid black;
+}
+
+#fourth {
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+}

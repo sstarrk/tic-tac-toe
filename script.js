@@ -28,10 +28,18 @@ const Gameboard = (() => {
 })();
 
 function Player(name, sign) {
-    return { name, sign }
+    let score = 0;
+
+    const getScore = () => score;
+    const incrementScore = () => score++;
+    return { name, sign, getScore, incrementScore }
 };
 
 const game = (() => {
+    const first = document.querySelector("#first");
+    const second = document.querySelector("#second");
+    const firstScore = document.querySelector("#third");
+    const secondScore = document.querySelector("#fourth");
     const cells = document.querySelectorAll(".cell"); 
     const turn = document.querySelector(".turn");
 
@@ -51,9 +59,12 @@ const game = (() => {
             player2 = Player(oname.value, "O");
             currentPlayer = player1;
             turn.textContent = `${currentPlayer.name}'s turn`;
+            first.textContent = player1.name;
+            second.textContent = player2.name;
+            firstScore.textContent = player1.getScore();
+            secondScore.textContent = player2.getScore();
         }
     });
-
 
     const winningCombinations = [
         [0, 1, 2],
@@ -97,6 +108,10 @@ const game = (() => {
 
                 if(checkForWins()) {
                     turn.textContent = `${currentPlayer.name} wins!`;
+                    currentPlayer.incrementScore();
+                    firstScore.textContent = player1.getScore();
+                    secondScore.textContent = player2.getScore();
+                    startGame();
                     return;
                 };
 
