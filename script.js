@@ -38,8 +38,7 @@ const game = (() => {
     const player1 = Player("Player1", "X");
     const player2 = Player("Player2", "O");
     
-    const putX = () => Gameboard.fillCell(player1);
-    const putO = () => Gameboard.fillCell(player2);
+    let currentPlayer = player1;
 
     const winningCombinations = [
         [0, 1, 2],
@@ -60,65 +59,47 @@ const game = (() => {
         });
     };
 
-    const play = () => {
-        console.clear();
-        Gameboard.clearBoard();
-        Gameboard.displayBoard();
-        let changer = true;
-        while(Gameboard.getBoard().some((element) => element == "")) {
-            let currentPlayer = changer ? player1 : player2;
-            changer ? putX() : putO();
-            displayController.refreshBoard();
-            console.clear();
-            Gameboard.displayBoard();
-            if(checkForWins()) {
-                console.log(`${currentPlayer.name} wins!`);
-                break;
-            };
-
-            changer = changer ? false : true;
-        };
-        if(checkForWins() == false) {
-            console.log("Tie!");
-        };
+    const checkForTie = () => {
+        const board = Gameboard.getBoard();
+        return board.every(cell => cell !== "") && !checkForWins();
     };
 
     const startGame = () => {
-        let currentPlayer = player1;
         Gameboard.clearBoard();
         turn.textContent = `${currentPlayer.name}'s turn`;
-        cells.forEach((cell, index) => {
-            const board = Gameboard.getBoard();
-            cell.addEventListener("click", () => {
-                if(Gameboard.fillCell(index, currentPlayer)) {
-                    displayController.refreshBoard();
-                    if(currentPlayer == player1) {
-                        turn.textContent = `${player2.name}'s turn`;
-                    } else if(currentPlayer == player2) {
-                        turn.textContent = `${player1.name}'s turn`;
-                    };
-
-                    if(checkForWins()) {
-                        turn.textContent = `${currentPlayer.name} wins!`;
-                        return;
-                    };
-
-                    if(board.every((element) => element != "") && checkForWins() == false) {
-                        turn.textContent = `Tie!`;
-                    }
-
-                    if(currentPlayer == player1) {
-                        currentPlayer = player2;
-                    } else if(currentPlayer == player2) {
-                        currentPlayer = player1;
-                    };
-                }
-
-            });
-        });
     };
 
-    return { putX, putO, play, checkForWins, startGame };
+    cells.forEach((cell, index) => {
+        const board = Gameboard.getBoard();
+        cell.addEventListener("click", () => {
+            if(Gameboard.fillCell(index, currentPlayer)) {
+                displayController.refreshBoard();
+                if(currentPlayer == player1) {
+                    turn.textContent = `${player2.name}'s turn`;
+                } else if(currentPlayer == player2) {
+                    turn.textContent = `${player1.name}'s turn`;
+                };
+
+                if(checkForWins()) {
+                    turn.textContent = `${currentPlayer.name} wins!`;
+                    return;
+                };
+
+                if(checkForTie()) {
+                    turn.textContent = "Tie!";
+                    return;
+                }
+
+                if(currentPlayer == player1) {
+                    currentPlayer = player2;
+                } else if(currentPlayer == player2) {
+                    currentPlayer = player1;
+                };
+            };
+        });
+    });
+    
+    return { checkForWins, startGame };
 })();
 
 const displayController = (() => {
