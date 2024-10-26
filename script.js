@@ -123,6 +123,7 @@ const game = (() => {
 
 const displayController = (() => {
     const cells = document.querySelectorAll(".cell");
+    const reset = document.querySelector("#reset");
     
     // Updates DOM info
     function refreshBoard() {
@@ -132,5 +133,11 @@ const displayController = (() => {
         });
     };
 
+    reset.addEventListener("click", () => {
+        game.startGame();
+    });
+
     return { refreshBoard };
 })();
+
+game.startGame();
