@@ -10,16 +10,18 @@ const Gameboard = (() => {
         console.log(` ${board[6]}  |  ${board[7]}  |  ${board[8]} `);
     };
 
-    const clearBoard = () => board = ["", "", "", "", "", "", "", "", ""];
+    const clearBoard = () => {
+        board = ["", "", "", "", "", "", "", "", ""];
+        displayController.refreshBoard();
+    };
 
-    const fillCell = (player) => {
-        let cellNumber = prompt("Fill the cell: ");
-        if(board[cellNumber - 1] == "") {
-            board[cellNumber - 1] = player.sign;
+    const fillCell = (index, player) => {
+        if(board[index] == "") {
+            board[index] = player.sign;
+            return true;
         } else {
-            console.log("This cell is already occupied. Choose another one");
-            fillCell(player);
-        }
+            return false;
+        };
     };
 
     return { getBoard, displayBoard, fillCell, clearBoard };
@@ -30,6 +32,9 @@ function Player(name, sign) {
 };
 
 const game = (() => {
+    const cells = document.querySelectorAll(".cell"); 
+    const turn = document.querySelector(".turn");
+
     const player1 = Player("Player1", "X");
     const player2 = Player("Player2", "O");
 
@@ -78,17 +83,47 @@ const game = (() => {
         };
     };
 
-    return { putX, putO, play, checkForWins };
+    const startGame = () => {
+        let currentPlayer = player1;
+        Gameboard.clearBoard();
+        cells.forEach((cell, index) => {
+            const board = Gameboard.getBoard();
+            cell.addEventListener("click", () => {
+                if(Gameboard.fillCell(index, currentPlayer)) {
+                    displayController.refreshBoard();
+
+                    if(checkForWins()) {
+                        alert("win")
+                    };
+
+                    if(board.every((element) => element != "") && checkForWins() == false) {
+                        alert("tie!")
+                    }
+
+                    if(currentPlayer == player1) {
+                        currentPlayer = player2;
+                    } else if(currentPlayer == player2) {
+                        currentPlayer = player1;
+                    };
+                }
+
+            });
+        });
+    };
+
+    return { putX, putO, play, checkForWins, startGame };
 })();
 
 const displayController = (() => {
     const cells = document.querySelectorAll(".cell");
+    
+    // Updates DOM info
     function refreshBoard() {
         const board = Gameboard.getBoard();
         cells.forEach((cell, index) => {
             cell.textContent = board[index];
         });
     };
-    
+
     return { refreshBoard };
 })();
