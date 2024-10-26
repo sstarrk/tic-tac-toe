@@ -34,10 +34,10 @@ function Player(name, sign) {
 const game = (() => {
     const cells = document.querySelectorAll(".cell"); 
     const turn = document.querySelector(".turn");
-
+    
     const player1 = Player("Player1", "X");
     const player2 = Player("Player2", "O");
-
+    
     const putX = () => Gameboard.fillCell(player1);
     const putO = () => Gameboard.fillCell(player2);
 
@@ -86,18 +86,25 @@ const game = (() => {
     const startGame = () => {
         let currentPlayer = player1;
         Gameboard.clearBoard();
+        turn.textContent = `${currentPlayer.name}'s turn`;
         cells.forEach((cell, index) => {
             const board = Gameboard.getBoard();
             cell.addEventListener("click", () => {
                 if(Gameboard.fillCell(index, currentPlayer)) {
                     displayController.refreshBoard();
+                    if(currentPlayer == player1) {
+                        turn.textContent = `${player2.name}'s turn`;
+                    } else if(currentPlayer == player2) {
+                        turn.textContent = `${player1.name}'s turn`;
+                    };
 
                     if(checkForWins()) {
-                        alert("win")
+                        turn.textContent = `${currentPlayer.name} wins!`;
+                        return;
                     };
 
                     if(board.every((element) => element != "") && checkForWins() == false) {
-                        alert("tie!")
+                        turn.textContent = `Tie!`;
                     }
 
                     if(currentPlayer == player1) {
